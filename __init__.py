@@ -1,10 +1,6 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from config import config
-
-# Initialize extensions
-db = SQLAlchemy()
 
 def create_app(config_name='default'):
     """
@@ -22,19 +18,20 @@ def create_app(config_name='default'):
     app.config.from_object(config[config_name])
     
     # Initialize extensions with app
+    from models import db  # Import the shared db instance
     db.init_app(app)
     CORS(app)  # Enable CORS for frontend integration
     
-    # Import and initialize models
-    from models import db as models_db, init_db, create_tables
-    init_db(app)
+    # Import and initialize models (this registers them with SQLAlchemy)
+    from models import Quiz, Question, Answer  # This ensures models are registered
     
     # Register blueprints
     from routes import register_blueprints
     register_blueprints(app)
     
-    # Create tables
-    with app.app_context():
-        create_tables(app)
+    # Create tables (only if not testing with in-memory DB)
+    if config_name != 'testing':
+        with app.app_context():
+            db.create_all()
     
     return app

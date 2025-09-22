@@ -4,3 +4,4 @@ python-dotenv==1.0.0
 psycopg[binary]==3.2.10
 supabase==2.0.0
 flask-cors==4.0.0
+gunicorn==21.2.0

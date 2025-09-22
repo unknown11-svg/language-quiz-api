@@ -6,3 +6,7 @@ settings.json
 venv
 test_api.py
 test_basic.py
+
+RENDER_DEPLOYMENT.md
+render.yaml
+INTEGRATION_GUIDE.md

@@ -38,6 +38,15 @@ class DevelopmentConfig(Config):
 class ProductionConfig(Config):
     """Production-specific configuration."""
     DEBUG = False
+    
+    # Enhanced production database settings
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        'pool_pre_ping': True,
+        'pool_recycle': 300,  # More aggressive recycling for free tier
+        'pool_size': 5,       # Smaller pool for free tier resources
+        'max_overflow': 0,    # No overflow connections
+        'pool_timeout': 20,   # Connection timeout
+    }
 
 class TestingConfig(Config):
     """Testing-specific configuration."""

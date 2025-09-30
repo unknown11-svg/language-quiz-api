@@ -1,0 +1,26 @@
+name: Keep Alive API
+
+on:
+  schedule:
+    # Runs every 14 minutes
+    - cron: '*/14 * * * *'
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send API Request
+        env:
+          # Store your API URL as a GitHub Secret for security
+          API_URL: ${{ secrets.RENDER_API_URL }}
+        run: |
+          # The 'curl' command sends a request to your API URL
+          curl -s $API_URL
+          
+          # Check the exit status of curl
+          if [ $? -eq 0 ]; then
+            echo "Successfully pinged the API at $API_URL"
+          else
+            echo "Failed to ping the API at $API_URL"
+            exit 1
+          fi
